@@ -1,0 +1,10 @@
+{
+  "prd_markdown": "# Acme Widget Optimizer\n\n## Problem Statement\n\nSmall-business owners spend an average of **3.2 hours per week** manually tuning widget parameters.\n\n## Objective\n\nBuild an automated widget-optimization service that reduces manual tuning time by 80%.\n\n## Success Metrics\n\n| Metric | Baseline | Target |\n|--------|----------|--------|\n| Manual tuning hours / week | 3.2 h | 0.6 h |\n| Parameter error rate | 18% | < 5% |\n\n## Risks\n\n1. Model accuracy\n2. Data quality\n3. Compliance\n",
+  "product_context": {
+    "domain": "SaaS / small-business tools",
+    "stage": "growth",
+    "team_size": 12
+  },
+  "audience": "VP of Product and engineering leads",
+  "mode": "mock"
+}
