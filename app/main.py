@@ -16,13 +16,15 @@ app = FastAPI(
     description="Automated PRD review engine powered by LLM analysis",
 )
 
+ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://prd-decision-engine-ewa84trba-davidgarzons-projects.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://prd-decision-engine-ewa84trba-davidgarzons-projects.vercel.app/",  
-     
-    ],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
