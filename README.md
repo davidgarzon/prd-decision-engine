@@ -2,12 +2,14 @@
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115-009688)
 ![Pydantic v2](https://img.shields.io/badge/Pydantic-v2-e92063)
 ![Tests](https://img.shields.io/badge/tests-29%20passed-brightgreen)
+![Next.js](https://img.shields.io/badge/Next.js-14-000000)
+![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-latest-000000)
 
 # prd-decision-engine
 
 A structured decision engine for evaluating Product Requirements Documents. It scores PRDs against a weighted rubric, surfaces delivery risks, gauges measurement maturity, and assigns a readiness level — giving product leaders an objective, reproducible signal on whether a document is ready for the next stage of investment.
 
-Works out of the box in **mock mode** (no API key needed) and optionally calls **OpenAI** for real LLM-powered analysis.
+Ships with a **modern web UI** (Next.js + shadcn/ui) featuring sidebar navigation, responsive layout, and real-time scoring visualization. Works out of the box in **mock mode** (no API key needed) and optionally calls **OpenAI** for real LLM-powered analysis.
 
 ## Use Cases
 
@@ -158,6 +160,64 @@ The `confidence` score (0–100) reflects how **reliable** the overall assessmen
 
 The full breakdown is always available in `decision_trace`.
 
+## Web UI
+
+A single-page Next.js frontend built with **shadcn/ui** and **Tailwind CSS**. Designed for PMs and product leaders who want to evaluate PRDs without touching `curl`.
+
+<!-- Screenshot placeholder: add a screenshot at docs/screenshot.png and uncomment below -->
+<!-- ![Screenshot](docs/screenshot.png) -->
+
+### Features
+
+- **Sidebar navigation** — brand, main review page, quick links to API Docs and JSON Schema.
+- **Split-pane layout** — PRD markdown editor on the left, live results on the right (desktop). On mobile, a segmented toggle switches between Editor and Results views.
+- **Score dashboard** — overall score, readiness level, confidence, and impact profile badges with semantic colors.
+- **Rubric table** — criterion-by-criterion breakdown with inline progress bars.
+- **Collapsible sections** — strengths, gaps, risks, questions, metrics, experiments, and assumptions.
+- **Health indicator** — real-time backend connectivity status in the header.
+- **Export** — copy review JSON to clipboard or download as file.
+
+### Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Components | shadcn/ui (Radix primitives) |
+| Styling | Tailwind CSS + tailwindcss-animate |
+| Icons | Lucide React |
+
+### Running the Web UI
+
+**Option A — Both services at once:**
+
+```bash
+./scripts/dev.sh
+```
+
+**Option B — Separately:**
+
+```bash
+# Terminal 1: Backend
+source .venv/bin/activate
+python -m uvicorn app.main:app --reload
+
+# Terminal 2: Frontend
+cd web
+npm install
+npm run dev
+```
+
+Then open http://localhost:3000.
+
+### Environment Variables
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `NEXT_PUBLIC_API_BASE_URL` | `http://127.0.0.1:8000` | Backend URL used by the frontend |
+
+Set in `web/.env.local` for local dev, or as a runtime env var for production deployments.
+
 ## Project Structure
 
 ```
@@ -169,6 +229,19 @@ app/
   services/
     reviewer.py        # Orchestrator: picks mock vs LLM
     llm_openai.py      # OpenAI adapter
+web/
+  app/
+    layout.tsx         # Root layout with AppShell (sidebar + header)
+    page.tsx           # Main review page (editor + results)
+  components/
+    ui/                # shadcn/ui primitives (Button, Card, Badge, Sheet…)
+    app-shell.tsx      # Sidebar + header + mobile Sheet
+    health-indicator.tsx
+    score-header.tsx   # Score / readiness / confidence cards
+    rubric-table.tsx   # Criterion table with progress bars
+    review-section.tsx # Collapsible detail sections
+    results-panel.tsx  # Orchestrates all result sections
+  lib/                 # API client, types, utils, sample PRD
 tests/
   test_health.py       # Health endpoint tests
   test_review.py       # Review endpoint tests
@@ -176,4 +249,6 @@ examples/
   prd_sample.md        # Sample PRD document
   review_request.json  # Sample request payload
   run_demo.sh          # End-to-end demo script
+scripts/
+  dev.sh               # Starts backend + frontend together
 ```
