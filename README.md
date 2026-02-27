@@ -11,6 +11,14 @@ A structured decision engine for evaluating Product Requirements Documents. It s
 
 Ships with a **modern web UI** (Next.js + shadcn/ui) featuring sidebar navigation, responsive layout, and real-time scoring visualization. Works out of the box in **mock mode** (no API key needed) and optionally calls **OpenAI** for real LLM-powered analysis.
 
+## Live Deployment
+
+- 🌐 Web UI: https://prd-decision-engine-ewa84trba-davidgarzons-projects.vercel.app/
+- 🔗 API: https://prd-decision-engine.onrender.com
+- 📘 API Docs (Swagger): https://prd-decision-engine.onrender.com/docs
+
+> Note: The backend runs on Render free tier and may take a few seconds to wake up after inactivity.
+
 ## Use Cases
 
 - **CPO / VP Product** — Run every PRD through the engine before a board review to catch blind spots and quantify readiness.
@@ -137,7 +145,7 @@ The `decision_trace.impact_profile` provides a qualitative risk assessment deriv
 | `strategic_alignment` | Problem Clarity + User Definition + Solution Coherence | How well the initiative maps to validated need |
 | `measurement_maturity` | Success Metrics + Rollout & Experimentation | Ability to objectively measure outcomes |
 
-Each dimension is rated **low**, **medium**, or **high**. Notably, `measurement_maturity` is forced to **low** whenever Rollout & Experimentation scores below 5 — strong metrics without a delivery plan to validate them do not constitute measurement readiness.
+Each dimension is rated **low**, **medium**, or **high**. `measurement_maturity` is automatically downgraded to **low** whenever Rollout & Experimentation scores below 5 — quantified metrics without a structured validation plan do not represent true measurement readiness.
 
 ### Readiness Level
 
@@ -163,9 +171,6 @@ The full breakdown is always available in `decision_trace`.
 ## Web UI
 
 A single-page Next.js frontend built with **shadcn/ui** and **Tailwind CSS**. Designed for PMs and product leaders who want to evaluate PRDs without touching `curl`.
-
-<!-- Screenshot placeholder: add a screenshot at docs/screenshot.png and uncomment below -->
-<!-- ![Screenshot](docs/screenshot.png) -->
 
 ### Features
 
